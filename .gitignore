@@ -1,0 +1,13 @@
+# skip npm modules
+node_modules/
+# skip every debug logs
+**/npm-debug.log.*
+**/npm-debug.log
+# skip vim swap files
+*.swp
+# skip build artifacts
+public/build
+# skip Mac system stuffs
+.DS_Store
+# skip yarm logs
+yarn-error.log
