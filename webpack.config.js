@@ -111,7 +111,6 @@ const common = {
     "react-router": "ReactRouter",
     "react-redux": "ReactRedux",
     "bootstrap/js/dist/modal": "$",
-    "html-entities": "HTMLEntities",
   },
 };
 
