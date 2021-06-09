@@ -10,6 +10,7 @@ import { AdditonProblem } from "./components/AdditionProblem";
 import { ColoringMap } from "./components/ColoringMap";
 import { TaiwanMap } from "./components/TaiwanMap";
 import { Bopomofo } from "./components/Bopomofo";
+import { ChineseCharacter } from "./components/ChineseCharacter";
 
 const AppWrapper = styled.div``;
 
@@ -37,6 +38,7 @@ export function App() {
           options={[
             { label: "長加法習題產生器", value: "addition" },
             { label: "注音符號練習表", value: "bopomofo" },
+            { label: "中文筆順練習表", value: "chinese-characters" },
             { label: "台灣縣市地圖", value: "taiwan-county-map" },
             { label: "世界地圖", value: "world-map" },
             { label: "亞洲地圖", value: "asia-map" },
@@ -68,6 +70,7 @@ export function App() {
       {mode !== "oceania-map" ? null : <ColoringMap region="oceania" />}
       {mode !== "taiwan-county-map" ? null : <TaiwanMap />}
       {mode !== "bopomofo" ? null : <Bopomofo />}
+      {mode !== "chinese-characters" ? null : <ChineseCharacter />}
 
       <SiteModal />
       <SiteSpinner />
