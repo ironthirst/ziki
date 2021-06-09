@@ -18,7 +18,7 @@ const NoPrint = styled.div`
 `;
 
 export function App() {
-  const [mode, setMode] = useState("world-map");
+  const [mode, setMode] = useState("addition");
 
   const dispatch = useDispatch();
 

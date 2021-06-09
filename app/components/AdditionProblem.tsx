@@ -17,7 +17,7 @@ const Container = styled.div<{ breakAfter?: boolean }>`
   flex-direction: column;
   width: 100%;
   @media print {
-    ${(props) => (props.breakAfter ? "page-break-after: always;" : "")};
+    ${(props) => (props.breakAfter ? "page-break-after: always;" : "")}
   }
 `;
 
@@ -56,7 +56,6 @@ const Cell = styled.div<{
 `;
 
 export function AdditonProblem() {
-  const dispatch = useDispatch();
   const [numberOfDigits, setNumberOfDigits] = useState(10);
   const [numberOfProblems, setNumberOfProblems] = useState(3);
   // const [problemsPerPage, setProblemsPerPage] = useState(3);
