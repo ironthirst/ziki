@@ -7,11 +7,16 @@ import { geoMercator, geoPath } from "d3-geo";
 import { geoData } from "../constants/countries.geo";
 import { ReduxState as RS } from "../rx";
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ landscape: boolean }>`
   height: auto;
   width: auto;
   padding: 0;
   margin: 0;
+  @media print {
+    @page {
+      size: ${(props) => (props.landscape ? "landscape" : "portrait")};
+    }
+  }
 `;
 
 const CountryBorder = styled.path<{ fill: string; stroke: string }>`
@@ -38,13 +43,15 @@ const regions: {
     scale: number;
     translate: { x: number; y: number };
     countries: Set<string>;
+    landscape: boolean;
   };
 } = {
   asia: {
+    landscape: true,
     scale: 3,
     translate: {
       x: -540,
-      y: -280,
+      y: -300,
     },
     countries: new Set([
       "AF",
@@ -102,10 +109,11 @@ const regions: {
     ]),
   },
   "north-america": {
-    scale: 1.5,
+    landscape: false,
+    scale: 1.7,
     translate: {
-      x: 80,
-      y: 0,
+      x: -20,
+      y: 50,
     },
     countries: new Set([
       "AI",
@@ -154,10 +162,11 @@ const regions: {
     ]),
   },
   "south-america": {
-    scale: 3,
+    landscape: false,
+    scale: 3.7,
     translate: {
-      x: -150,
-      y: -440,
+      x: -220,
+      y: -420,
     },
     countries: new Set([
       "AR",
@@ -178,6 +187,7 @@ const regions: {
     ]),
   },
   oceania: {
+    landscape: true,
     scale: 4,
     translate: {
       x: -750,
@@ -215,7 +225,8 @@ const regions: {
     ]),
   },
   europe: {
-    scale: 4,
+    landscape: true,
+    scale: 3.5,
     translate: {
       x: -390,
       y: -210,
@@ -274,10 +285,11 @@ const regions: {
     ]),
   },
   africa: {
-    scale: 3,
+    landscape: false,
+    scale: 3.2,
     translate: {
-      x: -350,
-      y: -360,
+      x: -410,
+      y: -320,
     },
     countries: new Set([
       "DZ",
@@ -351,7 +363,9 @@ export function ColoringMap(props: Props) {
 
   const region = regions[regionKey];
   const width = useSelector((s: RS) => s.site.viewPort.width);
-  const height = (width / 4) * 3; // 4:3 ratio map
+  const landscape = region ? region.landscape : true;
+  // adjust height to make sure it print within 1 page
+  const height = landscape ? width / 1.5 : width * 1;
 
   const pathData = useMemo(() => {
     // Build a path & a tooltip for each country
@@ -384,12 +398,8 @@ export function ColoringMap(props: Props) {
   }, [region]);
 
   return (
-    <Wrapper>
-      <svg
-        height={`${height}px`}
-        width={`${width}px`}
-        style={{ background: "white" }}
-      >
+    <Wrapper landscape={landscape}>
+      <svg height={`${height}px`} width={`${width}px`}>
         <g
           transform={`scale(${
             (width / 1000) * (region?.scale || 1)
