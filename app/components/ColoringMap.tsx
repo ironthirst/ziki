@@ -104,8 +104,9 @@ const regions: {
 
     // prettier-ignore
     countries: new Set([
-      "NC", "NU", "NF", "PW", "PG", "MP", "WS", "SB", "TK", "TO", "TV", "VU", 
-      "UM", "WF",
+      "AS", "AU", "NZ", "CK", "TL", "FM", "FJ", "PF", "GU", "KI", "MP", "MH",
+      "UM", "NR", "NC", "NU", "NF", "PW", "PG", "MP", "WS", "SB", "TK", "TO", 
+      "TV", "VU", "UM", "WF",
     ]),
   },
   europe: {
