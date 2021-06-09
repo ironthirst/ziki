@@ -140,10 +140,6 @@ export function AdditonProblem() {
             <Button secondary onClick={() => setNounce(nounce + 1)}>
               重新產生題目
             </Button>
-            &nbsp;
-            <Button primary onClick={() => window.print()}>
-              列印
-            </Button>
           </div>
         </Row>
       </NoPrintContainer>
