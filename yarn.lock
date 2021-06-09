@@ -1054,6 +1054,13 @@
     "@popperjs/core" "^2.9.2"
     "@types/jquery" "*"
 
+"@types/d3-geo@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@types/d3-geo/-/d3-geo-2.0.0.tgz#6f179512343c2d30e06acde190abfacf44b2d264"
+  integrity sha512-DHHgYXW36lnAEQMYU2udKVOxxljHrn2EdOINeSC9jWCAXwOnGn7A19B8sNsHqgpu4F7O2bSD7//cqBXD3W0Deg==
+  dependencies:
+    "@types/geojson" "*"
+
 "@types/eslint-scope@^3.7.0":
   version "3.7.0"
   resolved "https://registry.yarnpkg.com/@types/eslint-scope/-/eslint-scope-3.7.0.tgz#4792816e31119ebd506902a482caec4951fabd86"
@@ -1080,7 +1087,7 @@
   resolved "https://registry.yarnpkg.com/@types/estree/-/estree-0.0.47.tgz#d7a51db20f0650efec24cd04994f523d93172ed4"
   integrity sha512-c5ciR06jK8u9BstrmJyO97m+klJrrhCf9u3rLu3DEAJBirxRqSCvDQoYKmxuYwQI5SZChAWu+tq9oVlGRuzPAg==
 
-"@types/geojson@^7946.0.7":
+"@types/geojson@*", "@types/geojson@^7946.0.7":
   version "7946.0.7"
   resolved "https://registry.yarnpkg.com/@types/geojson/-/geojson-7946.0.7.tgz#c8fa532b60a0042219cdf173ca21a975ef0666ad"
   integrity sha512-wE2v81i4C4Ol09RtsWFAqg3BUitWbHSpSlIo+bNdsCJijO9sjme+zm+73ZMCa/qMC8UEERxzGbvmr1cffo2SiQ==

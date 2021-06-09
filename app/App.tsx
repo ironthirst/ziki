@@ -8,14 +8,10 @@ import { PageLoadingSpinner } from "./components/Manta";
 
 import { AdditonProblem } from "./components/AdditionProblem";
 import { ColoringMap } from "./components/ColoringMap";
+import { TaiwanMap } from "./components/TaiwanMap";
+import { Bopomofo } from "./components/Bopomofo";
 
 const AppWrapper = styled.div``;
-
-const NoPrint = styled.div`
-  @media print {
-    display: none !important;
-  }
-`;
 
 export function App() {
   const [mode, setMode] = useState("addition");
@@ -28,36 +24,35 @@ export function App() {
 
   return (
     <AppWrapper>
-      <NoPrint>
-        <div
-          className="p-2"
-          style={{
-            marginLeft: "auto",
-            marginRight: "auto",
-            width: "90%",
-            borderBottom: "1px solid #333",
-          }}
-        >
-          <RadioGroup
-            groupName="function-select"
-            options={[
-              { label: "長加法習題產生器", value: "addition" },
-              { label: "世界地圖", value: "world-map" },
-              { label: "亞洲地圖", value: "asia-map" },
-              { label: "非洲地圖", value: "africa-map" },
-              { label: "歐洲地圖", value: "europe-map" },
-              { label: "北美洲地圖", value: "north-america-map" },
-              { label: "南美洲地圖", value: "south-america-map" },
-              { label: "大洋洲地圖", value: "oceania-map" },
-            ]}
-            value={mode}
-            onValueChanged={setMode}
-          />
-          <Button primary onClick={() => window.print()}>
-            列印
-          </Button>
-        </div>
-      </NoPrint>
+      <div
+        className="p-2 d-print-none"
+        style={{
+          marginLeft: "auto",
+          marginRight: "auto",
+          width: "90%",
+          borderBottom: "1px solid #333",
+        }}
+      >
+        <DropDown
+          options={[
+            { label: "長加法習題產生器", value: "addition" },
+            { label: "注音符號練習表", value: "bopomofo" },
+            { label: "台灣縣市地圖", value: "taiwan-county-map" },
+            { label: "世界地圖", value: "world-map" },
+            { label: "亞洲地圖", value: "asia-map" },
+            { label: "非洲地圖", value: "africa-map" },
+            { label: "歐洲地圖", value: "europe-map" },
+            { label: "北美洲地圖", value: "north-america-map" },
+            { label: "南美洲地圖", value: "south-america-map" },
+            { label: "大洋洲地圖", value: "oceania-map" },
+          ]}
+          value={mode}
+          onValueChanged={setMode}
+        />
+        <Button primary onClick={() => window.print()}>
+          列印
+        </Button>
+      </div>
 
       {mode !== "addition" ? null : <AdditonProblem />}
       {mode !== "world-map" ? null : <ColoringMap region="world" />}
@@ -71,6 +66,8 @@ export function App() {
         <ColoringMap region="south-america" />
       )}
       {mode !== "oceania-map" ? null : <ColoringMap region="oceania" />}
+      {mode !== "taiwan-county-map" ? null : <TaiwanMap />}
+      {mode !== "bopomofo" ? null : <Bopomofo />}
 
       <SiteModal />
       <SiteSpinner />

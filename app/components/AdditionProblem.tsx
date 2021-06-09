@@ -21,12 +21,6 @@ const Container = styled.div<{ breakAfter?: boolean }>`
   }
 `;
 
-const NoPrintContainer = styled(Container)`
-  @media print {
-    display: none !important;
-  }
-`;
-
 const Row = styled.div`
   display: flex;
   flex-direction: row;
@@ -73,9 +67,9 @@ export function AdditonProblem() {
 
   return (
     <div style={{ width: "90%", marginLeft: "auto", marginRight: "auto" }}>
-      <NoPrintContainer
+      <Container
         breakAfter
-        className="py-4"
+        className="py-4 d-print-none"
         style={{ flex: 1, borderBottom: `1px solid #333` }}
       >
         <Row>
@@ -141,7 +135,7 @@ export function AdditonProblem() {
             </Button>
           </div>
         </Row>
-      </NoPrintContainer>
+      </Container>
       {times(numberOfProblems).map((n) => (
         <div key={n}>
           <Container>

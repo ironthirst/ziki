@@ -12,6 +12,11 @@ const Wrapper = styled.div<{ landscape: boolean }>`
   width: auto;
   padding: 0;
   margin: 0;
+  @media print {
+    @page {
+      size: ${(props) => (props.landscape ? "landscape" : "portrait")};
+    }
+  }
 `;
 
 const CountryBorder = styled.path<{ fill: string; stroke: string }>`
