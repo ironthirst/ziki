@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useSelector } from "react-redux";
 
 import { ReduxState as RS } from "../rx";
-import { RadioGroup, DropDown, CheckBoxGroup } from "./Manta";
+import { RadioGroup, DropDown, CheckBoxGroup, Button } from "./Manta";
 import { chunk, times } from "../lib/util";
 import { config } from "../config";
 
@@ -66,12 +66,11 @@ const Cell = styled.div<{
 `;
 
 const symbols =
-  "ㄅㄆㄇㄈㄉㄊㄋㄌㄍㄎㄏㄐㄑㄒㄓㄔㄕㄖㄗㄘㄙㄧㄨㄩㄚㄛㄝㄞㄟㄠㄡㄢㄣㄤㄥㄦ".split(
+  "ㄅㄆㄇㄈㄉㄊㄋㄌㄍㄎㄏㄐㄑㄒㄓㄔㄕㄖㄗㄘㄙㄧㄨㄩㄚㄛㄜㄝㄞㄟㄠㄡㄢㄣㄤㄥㄦ".split(
     ""
   );
-
 export function Bopomofo() {
-  const symbolsPerRow = 9;
+  const symbolsPerRow = 8;
 
   const screenWidth = useSelector((s: RS) => s.site.viewPort.width);
   const cellSize = screenWidth / symbolsPerRow;
@@ -100,6 +99,36 @@ export function Bopomofo() {
               value={selectedSymbols}
               onValueChanged={setSelectedSymbols}
             />
+          </div>
+        </Row>
+        <Row>
+          <div className="py-4" style={{ flex: 1 }}>
+            <Button
+              secondary
+              onClick={() => {
+                setSelectedSymbols("ㄉㄊㄋㄍㄖㄏㄗㄛㄜㄟㄞㄠㄢㄝㄤㄦ".split(""));
+              }}
+            >
+              選取易寫反符號
+            </Button>
+            &nbsp;
+            <Button
+              secondary
+              onClick={() => {
+                setSelectedSymbols([]);
+              }}
+            >
+              重選
+            </Button>
+            &nbsp;
+            <Button
+              secondary
+              onClick={() => {
+                setSelectedSymbols(symbols);
+              }}
+            >
+              全選
+            </Button>
           </div>
         </Row>
         <Row>
