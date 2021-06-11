@@ -6,23 +6,12 @@ import { geoMercator, geoPath } from "d3-geo";
 
 import { geoData } from "../constants/countries.geo";
 import { ReduxState as RS } from "../rx";
+import { PageWrapper } from "./common";
 
-const Wrapper = styled.div<{ landscape: boolean }>`
-  height: auto;
-  width: auto;
-  padding: 0;
-  margin: 0;
-  @media print {
-    @page {
-      size: ${(props) => (props.landscape ? "landscape" : "portrait")};
-    }
-  }
-`;
-
-const CountryBorder = styled.path<{ fill: string; stroke: string }>`
-  fill: ${(props) => props.fill};
+const CountryBorder = styled.path`
+  fill: white;
   fill-opacity: 1;
-  stroke: ${(props) => props.stroke};
+  stroke: black;
   stroke-opacity: 1;
   cursor: pointer;
 `;
@@ -153,56 +142,44 @@ export function ColoringMap(props: Props) {
   // adjust height to make sure it print within 1 page
   const height = landscape ? width / 1.5 : width * 1;
 
-  const pathData = useMemo(() => {
-    // Build a path & a tooltip for each country
-    const projection = geoMercator();
-    const pathGenerator = geoPath().projection(projection);
+  // Build a path & a tooltip for each country
+  const projection = geoMercator();
+  const pathGenerator = geoPath().projection(projection);
 
-    return geoData.features
-      .filter((feature) => {
-        if (!region) return true;
-        return region.countries.has(feature.I);
-      })
-      .map((feature) => {
-        const isoCode = feature.I;
-        const countryName = feature.N;
-        const geoFeature: GeoJSON.Feature = {
-          type: "Feature",
-          properties: { NAME: countryName, ISO_A2: isoCode },
-          geometry: {
-            type: "MultiPolygon",
-            coordinates: feature.C as GeoJSON.Position[][][],
-          },
-        };
+  const pathData = geoData.features
+    .filter((feature) => {
+      // keep only the countries within the regions specified
+      return region ? region.countries.has(feature.I) : true;
+    })
+    .map((feature) => {
+      const geoFeature: GeoJSON.Feature = {
+        type: "Feature",
+        properties: {},
+        geometry: {
+          type: "MultiPolygon",
+          coordinates: feature.C,
+        },
+      };
 
-        return {
-          d: pathGenerator(geoFeature) as string,
-          name: countryName,
-          code: isoCode,
-        };
-      });
-  }, [region]);
+      return pathGenerator(geoFeature);
+    });
+
+  const transforms = [
+    `translate (${region?.translate.x || 0},${
+      240 + (region?.translate.y || 0)
+    })`,
+    `scale(${(width / 1000) * (region?.scale || 1)})`,
+  ];
 
   return (
-    <Wrapper landscape={landscape}>
+    <PageWrapper landscape={landscape} portrait={!landscape}>
       <svg height={`${height}px`} width={`${width}px`}>
-        <g
-          transform={`scale(${
-            (width / 1000) * (region?.scale || 1)
-          }) translate (${region?.translate.x || 0},${
-            240 + (region?.translate.y || 0)
-          })`}
-        >
-          {pathData.map((data) => (
-            <CountryBorder
-              key={`path_${data.code}`}
-              d={data.d}
-              fill="white"
-              stroke="black"
-            />
+        <g transform={transforms.reverse().join(" ")}>
+          {pathData.map((d, i) => (
+            <CountryBorder key={`path_${i}`} d={d} />
           ))}
         </g>
       </svg>
-    </Wrapper>
+    </PageWrapper>
   );
 }

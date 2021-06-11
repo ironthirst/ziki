@@ -1,27 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 
 import { ReduxState as RS } from "../rx";
-import { RadioGroup, DropDown, CheckBoxGroup, Button } from "./Manta";
+import { RadioGroup, CheckBoxGroup, Button } from "./Manta";
 import { chunk, times } from "../lib/util";
 import { config } from "../config";
-
-const Wrapper = styled.div`
-  width: 90%;
-  margin-left: auto;
-  margin-right: auto;
-  @media print {
-    @page {
-      size: landscape;
-    }
-  }
-`;
+import { PageWrapper } from "./common";
 
 const Title = styled.div`
   font-size: 2rem;
   font-weight: 300;
   letter-spacing: 0.4rem;
+  text-align: center;
 `;
 
 const Container = styled.div<{ breakAfter?: boolean }>`
@@ -74,7 +65,6 @@ export function Bopomofo() {
 
   const screenWidth = useSelector((s: RS) => s.site.viewPort.width);
   const cellSize = screenWidth / symbolsPerRow;
-  const isSmallScreen = useSelector((s: RS) => s.site.viewPort.isSmallScreen);
   const [selectedSymbols, setSelectedSymbols] = useState([...symbols]);
   const [practiceCount, setPracticeCount] = useState(4);
 
@@ -82,67 +72,55 @@ export function Bopomofo() {
 
   console.log(chunked);
   return (
-    <Wrapper>
-      <Container
+    <PageWrapper landscape>
+      <div
         className="py-4 d-print-none"
-        style={{ flex: 1, borderBottom: `1px solid #333` }}
+        style={{ borderBottom: `1px solid #333` }}
       >
-        <Row>
-          <Title className="py-4">注音符號習題產生器</Title>
-        </Row>
-        <Row>
-          <div style={{ flex: 1 }}>
-            <CheckBoxGroup
-              label="練習符號"
-              groupName="symbols"
-              options={symbols.map((value) => ({ value }))}
-              value={selectedSymbols}
-              onValueChanged={setSelectedSymbols}
-            />
-          </div>
-        </Row>
-        <Row>
-          <div className="py-4" style={{ flex: 1 }}>
-            <Button
-              secondary
-              onClick={() => {
-                setSelectedSymbols("ㄉㄊㄋㄍㄖㄏㄗㄛㄜㄟㄞㄠㄢㄝㄤㄦ".split(""));
-              }}
-            >
-              選取易寫反符號
-            </Button>
-            &nbsp;
-            <Button
-              secondary
-              onClick={() => {
-                setSelectedSymbols([]);
-              }}
-            >
-              重選
-            </Button>
-            &nbsp;
-            <Button
-              secondary
-              onClick={() => {
-                setSelectedSymbols(symbols);
-              }}
-            >
-              全選
-            </Button>
-          </div>
-        </Row>
-        <Row>
-          <div style={{ flex: 1 }}>
-            <RadioGroup
-              label="練習次數"
-              groupName="practice-count"
-              options={times(4).map((n) => ({ value: `${n + 1}` }))}
-              value={`${practiceCount}`}
-              onValueChanged={(s) => setPracticeCount(parseInt(s))}
-            />
-          </div>
-        </Row>
-      </Container>
+        <Title className="py-4">注音符號習題產生器</Title>
+        <CheckBoxGroup
+          label="練習符號"
+          groupName="symbols"
+          options={symbols.map((value) => ({ value }))}
+          value={selectedSymbols}
+          onValueChanged={setSelectedSymbols}
+        />
+        <div className="py-4">
+          <Button
+            secondary
+            onClick={() => {
+              setSelectedSymbols("ㄉㄊㄋㄍㄖㄏㄗㄛㄜㄟㄞㄠㄢㄝㄤㄦ".split(""));
+            }}
+          >
+            選取易寫反符號
+          </Button>
+          &nbsp;
+          <Button
+            secondary
+            onClick={() => {
+              setSelectedSymbols([]);
+            }}
+          >
+            重選
+          </Button>
+          &nbsp;
+          <Button
+            secondary
+            onClick={() => {
+              setSelectedSymbols(symbols);
+            }}
+          >
+            全選
+          </Button>
+        </div>
+        <RadioGroup
+          label="練習次數"
+          groupName="practice-count"
+          options={times(4).map((n) => ({ value: `${n + 1}` }))}
+          value={`${practiceCount}`}
+          onValueChanged={(s) => setPracticeCount(parseInt(s))}
+        />
+      </div>
       {chunked.map((chunk, i) => (
         <Grid
           key={i}
@@ -153,7 +131,7 @@ export function Bopomofo() {
           getText={(row, col) => (row ? "" : chunk[col] || "")}
         />
       ))}
-    </Wrapper>
+    </PageWrapper>
   );
 }
 

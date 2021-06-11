@@ -5,11 +5,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { ReduxState as RS } from "../rx";
 import { times } from "../lib/util";
 import { DropDown, Button, BinaryRadioGroup, RadioGroup } from "./Manta";
+import { PageWrapper } from "./common";
 
 const Title = styled.div`
   font-size: 2rem;
   font-weight: 300;
   letter-spacing: 0.4rem;
+  text-align: center;
 `;
 
 const Container = styled.div<{ breakAfter?: boolean }>`
@@ -66,76 +68,57 @@ export function AdditonProblem() {
   const showGrid = true;
 
   return (
-    <div style={{ width: "90%", marginLeft: "auto", marginRight: "auto" }}>
-      <Container
-        breakAfter
+    <PageWrapper>
+      <div
         className="py-4 d-print-none"
-        style={{ flex: 1, borderBottom: `1px solid #333` }}
+        style={{ borderBottom: `1px solid #333` }}
       >
-        <Row>
-          <Title className="py-4">長加法習題產生器</Title>
-        </Row>
-        <Row>
-          <DropDown
-            style={{ flex: 1 }}
-            label="題數"
-            options={times(21).map((n) => ({
-              label: `${n + 1}`,
-              value: `${n + 1}`,
-            }))}
-            value={`${numberOfProblems}`}
-            onValueChanged={(s) => setNumberOfProblems(parseInt(s))}
-          />
-        </Row>
-        <Row>
-          <div style={{ flex: 1 }}>
-            <RadioGroup
-              groupName="number-of-digits"
-              label="位數"
-              options={times(10).map((n) => ({
-                label: `${n + 1}`,
-                value: `${n + 1}`,
-              }))}
-              value={`${numberOfDigits}`}
-              onValueChanged={(s) => setNumberOfDigits(parseInt(s))}
-            />
-          </div>
-        </Row>
-        <Row>
-          <div style={{ flex: 1 }}>
-            <RadioGroup
-              groupName="min-digit-value"
-              label="最低 Digit 值"
-              options={times(allowCarry ? 9 : 4).map((n) => ({
-                label: `${n + 1}`,
-                value: `${n + 1}`,
-              }))}
-              value={`${minDigitValue}`}
-              onValueChanged={(s) => setMinDigitValue(parseInt(s))}
-            />
-          </div>
-        </Row>
-        <Row>
-          <div style={{ flex: 1 }}>
-            <BinaryRadioGroup
-              groupName="radio-carry-over"
-              label="包含進位?"
-              value={allowCarry}
-              onValueChanged={(b) => {
-                setMinDigitValue(Math.min(minDigitValue, 4));
-                setAllowCarry(b);
-              }}
-            />
-          </div>
-        </Row>
-        <Row>
-          <div style={{ flex: 1 }}>
-            <Button secondary onClick={() => setNounce(nounce + 1)}>
-              重新產生題目
-            </Button>
-          </div>
-        </Row>
-      </Container>
+        <Title className="py-4">長加法習題產生器</Title>
+        <DropDown
+          style={{ flex: 1 }}
+          label="題數"
+          options={times(21).map((n) => ({
+            label: `${n + 1}`,
+            value: `${n + 1}`,
+          }))}
+          value={`${numberOfProblems}`}
+          onValueChanged={(s) => setNumberOfProblems(parseInt(s))}
+        />
+        <RadioGroup
+          groupName="number-of-digits"
+          label="位數"
+          options={times(10).map((n) => ({
+            label: `${n + 1}`,
+            value: `${n + 1}`,
+          }))}
+          value={`${numberOfDigits}`}
+          onValueChanged={(s) => setNumberOfDigits(parseInt(s))}
+        />
+        <RadioGroup
+          groupName="min-digit-value"
+          label="最低 Digit 值"
+          options={times(allowCarry ? 9 : 4).map((n) => ({
+            label: `${n + 1}`,
+            value: `${n + 1}`,
+          }))}
+          value={`${minDigitValue}`}
+          onValueChanged={(s) => setMinDigitValue(parseInt(s))}
+        />
+        <BinaryRadioGroup
+          groupName="radio-carry-over"
+          label="包含進位?"
+          value={allowCarry}
+          onValueChanged={(b) => {
+            setMinDigitValue(Math.min(minDigitValue, 4));
+            setAllowCarry(b);
+          }}
+        />
+        <div>
+          <Button secondary onClick={() => setNounce(nounce + 1)}>
+            重新產生題目
+          </Button>
+        </div>
+      </div>
       {times(numberOfProblems).map((n) => (
         <div key={n}>
           <Container>
@@ -151,7 +134,7 @@ export function AdditonProblem() {
           <ProblemGrid breakAfter={(n + 1) % problemsPerPage === 0} />
         </div>
       ))}
-    </div>
+    </PageWrapper>
   );
 
   function ProblemGrid(props: { breakAfter?: boolean }) {

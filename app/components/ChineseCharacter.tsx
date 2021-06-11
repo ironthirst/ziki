@@ -1,47 +1,18 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
-import styled from "styled-components";
 import { useDispatch } from "react-redux";
 
 import { actions } from "../rx";
 import { Button, TextInput } from "./Manta";
-
-const Wrapper = styled.div`
-  width: 90%;
-  margin-left: auto;
-  margin-right: auto;
-  @media print {
-    @page {
-      size: landscape;
-    }
-  }
-`;
-
-function downloadFile(file: File) {
-  // Create a link and set the URL using `createObjectURL`
-  const link = document.createElement("a");
-  link.style.display = "none";
-  link.href = URL.createObjectURL(file);
-  link.download = file.name;
-
-  // It needs to be added to the DOM so it can be clicked
-  document.body.appendChild(link);
-  link.click();
-
-  // To make this work on Firefox we need to wait
-  // a little while before removing it.
-  setTimeout(() => {
-    URL.revokeObjectURL(link.href);
-    link.parentNode.removeChild(link);
-  }, 0);
-}
+import { downloadFile } from "../lib/util";
+import { PageWrapper } from "./common/PageWrapper";
 
 export function ChineseCharacter() {
   const dispatch = useDispatch();
   const [text, setText] = useState("");
 
   return (
-    <Wrapper>
+    <PageWrapper landscape>
       <div className="p-2">
         <TextInput
           required
@@ -73,14 +44,15 @@ export function ChineseCharacter() {
             params.append("csrfPreventionSalt", "null"); // field required
             params.append("print", "下載練習簿"); // field / value required
 
-            console.log(params.toString());
+            const headers = {
+              "Content-Type": "application/x-www-form-urlencoded",
+            };
+
             const res = await axios.post(
               "https://stroke-order.learningweb.moe.edu.tw/download.do",
               params,
               {
-                headers: {
-                  "Content-Type": "application/x-www-form-urlencoded",
-                },
+                headers,
                 responseType: "blob",
               }
             );
@@ -91,6 +63,6 @@ export function ChineseCharacter() {
           下載練習本
         </Button>
       </div>
-    </Wrapper>
+    </PageWrapper>
   );
 }
