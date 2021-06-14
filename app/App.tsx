@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Route, useHistory } from "react-router-dom";
 import styled from "styled-components";
 
 import { actions, ReduxState as RS } from "./rx";
-import { Modal, Button, RadioGroup, DropDown } from "./components/Manta";
+import { Modal, Button, DropDown } from "./components/Manta";
 import { PageLoadingSpinner } from "./components/Manta";
 
 import { AdditonProblem } from "./components/AdditionProblem";
@@ -18,18 +19,19 @@ import { RoundTheMap } from "./components/RoundTheMapGame";
 
 const AppWrapper = styled.div``;
 
-const defaultMode = "addition";
-
 const showGames = false;
 
 export function App() {
-  const [mode, setMode] = useState(defaultMode);
-
+  const history = useHistory();
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(actions.site.installWindowHooks());
   }, []);
+
+  const [currentMode, setCurrentMode] = useState(
+    history.location.pathname.substr(1)
+  );
 
   return (
     <AppWrapper>
@@ -51,9 +53,11 @@ export function App() {
             { label: "中文筆順練習表", value: "chinese-characters" },
             { label: "英文筆順練習表", value: "english-characters" },
           ]}
-          value={mode}
+          value={currentMode}
           onValueChanged={(s) => {
-            if (s) setMode(s);
+            if (!s) return;
+            setCurrentMode(s);
+            history.push(`/${s}`);
           }}
         />
         <DropDown
@@ -69,9 +73,10 @@ export function App() {
             { label: "南美洲地圖", value: "south-america-map" },
             { label: "大洋洲地圖", value: "oceania-map" },
           ]}
-          value={mode}
+          value={currentMode}
           onValueChanged={(s) => {
-            if (s) setMode(s);
+            if (!s) return;
+            history.push(`/${s}`);
           }}
         />
         {!showGames ? null : (
@@ -82,9 +87,10 @@ export function App() {
               { label: "怪物大亂鬥", value: "battle-dice-game" },
               { label: "環遊台灣", value: "round-the-map" },
             ]}
-            value={mode}
+            value={currentMode}
             onValueChanged={(s) => {
-              if (s) setMode(s);
+              if (!s) return;
+              history.push(`/${s}`);
             }}
           />
         )}
@@ -93,24 +99,37 @@ export function App() {
         </Button>
       </div>
 
-      {mode !== "addition" ? null : <AdditonProblem />}
-      {mode !== "world-map" ? null : <ColoringMap region="world" />}
-      {mode !== "asia-map" ? null : <ColoringMap region="asia" />}
-      {mode !== "africa-map" ? null : <ColoringMap region="africa" />}
-      {mode !== "europe-map" ? null : <ColoringMap region="europe" />}
-      {mode !== "north-america-map" ? null : (
-        <ColoringMap region="north-america" />
-      )}
-      {mode !== "south-america-map" ? null : (
-        <ColoringMap region="south-america" />
-      )}
-      {mode !== "oceania-map" ? null : <ColoringMap region="oceania" />}
-      {mode !== "taiwan-county-map" ? null : <TaiwanMap />}
-      {mode !== "bopomofo" ? null : <Bopomofo />}
-      {mode !== "chinese-characters" ? null : <ChineseCharacter />}
-      {mode !== "english-characters" ? null : <EnglishCharacter />}
-      {mode !== "battle-dice-game" ? null : <BattleDiceGame />}
-      {mode !== "round-the-map" ? null : <RoundTheMap />}
+      <Route path="/addition" component={AdditonProblem} />
+      <Route path="/world-map" render={() => <ColoringMap region="world" />} />
+      <Route path="/asia-map" render={() => <ColoringMap region="asia" />} />
+      <Route
+        path="/africa-map"
+        render={() => <ColoringMap region="africa" />}
+      />
+
+      <Route
+        path="/europe-map"
+        render={() => <ColoringMap region="europe" />}
+      />
+      <Route
+        path="/north-america-map"
+        render={() => <ColoringMap region="north-america" />}
+      />
+      <Route
+        path="/south-america-map"
+        render={() => <ColoringMap region="south-america" />}
+      />
+      <Route
+        path="/oceania-map"
+        render={() => <ColoringMap region="oceania" />}
+      />
+
+      <Route path="/taiwan-county-map" component={TaiwanMap} />
+      <Route path="/bopomofo" component={Bopomofo} />
+      <Route path="/chinese-characters" component={ChineseCharacter} />
+      <Route path="/english-characters" component={EnglishCharacter} />
+      <Route path="/battle-dice-game" component={BattleDiceGame} />
+      <Route path="/round-the-map" component={RoundTheMap} />
 
       <SiteModal />
       <SiteSpinner />
