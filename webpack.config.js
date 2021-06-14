@@ -68,7 +68,7 @@ const common = {
       },
       {
         // images
-        test: /\.(png|jpe?g|gif|svg)$/i,
+        test: /\.(png|jpe?g|gif)$/i,
         exclude: /node_modules/,
         use: [{ loader: "file-loader" }],
       },

@@ -11,11 +11,19 @@ import { ColoringMap } from "./components/ColoringMap";
 import { TaiwanMap } from "./components/TaiwanMap";
 import { Bopomofo } from "./components/Bopomofo";
 import { ChineseCharacter } from "./components/ChineseCharacter";
+import { EnglishCharacter } from "./components/EnglishCharacter";
+
+import { BattleDiceGame } from "./components/BattleDiceGame";
+import { RoundTheMap } from "./components/RoundTheMapGame";
 
 const AppWrapper = styled.div``;
 
+const defaultMode = "addition";
+
+const showGames = false;
+
 export function App() {
-  const [mode, setMode] = useState("addition");
+  const [mode, setMode] = useState(defaultMode);
 
   const dispatch = useDispatch();
 
@@ -35,10 +43,23 @@ export function App() {
         }}
       >
         <DropDown
+          label="習題"
           options={[
+            { label: "---", value: "" },
             { label: "長加法習題產生器", value: "addition" },
             { label: "注音符號練習表", value: "bopomofo" },
             { label: "中文筆順練習表", value: "chinese-characters" },
+            { label: "英文筆順練習表", value: "english-characters" },
+          ]}
+          value={mode}
+          onValueChanged={(s) => {
+            if (s) setMode(s);
+          }}
+        />
+        <DropDown
+          label="地圖"
+          options={[
+            { label: "---", value: "" },
             { label: "台灣縣市地圖", value: "taiwan-county-map" },
             { label: "世界地圖", value: "world-map" },
             { label: "亞洲地圖", value: "asia-map" },
@@ -49,8 +70,24 @@ export function App() {
             { label: "大洋洲地圖", value: "oceania-map" },
           ]}
           value={mode}
-          onValueChanged={setMode}
+          onValueChanged={(s) => {
+            if (s) setMode(s);
+          }}
         />
+        {!showGames ? null : (
+          <DropDown
+            label="遊戲"
+            options={[
+              { label: "---", value: "" },
+              { label: "怪物大亂鬥", value: "battle-dice-game" },
+              { label: "環遊台灣", value: "round-the-map" },
+            ]}
+            value={mode}
+            onValueChanged={(s) => {
+              if (s) setMode(s);
+            }}
+          />
+        )}
         <Button primary onClick={() => window.print()}>
           列印
         </Button>
@@ -71,6 +108,9 @@ export function App() {
       {mode !== "taiwan-county-map" ? null : <TaiwanMap />}
       {mode !== "bopomofo" ? null : <Bopomofo />}
       {mode !== "chinese-characters" ? null : <ChineseCharacter />}
+      {mode !== "english-characters" ? null : <EnglishCharacter />}
+      {mode !== "battle-dice-game" ? null : <BattleDiceGame />}
+      {mode !== "round-the-map" ? null : <RoundTheMap />}
 
       <SiteModal />
       <SiteSpinner />

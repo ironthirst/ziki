@@ -70,7 +70,6 @@ export function Bopomofo() {
 
   const chunked = chunk(selectedSymbols, symbolsPerRow);
 
-  console.log(chunked);
   return (
     <PageWrapper landscape>
       <div

@@ -1,5 +1,5 @@
 export function times(n: number) {
-  return new Array(n).fill(undefined).map((v, i) => i);
+  return new Array(Math.max(n, 0)).fill(undefined).map((v, i) => i);
 }
 
 export function chunk<T>(arr: T[], n: number) {
