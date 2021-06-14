@@ -29,9 +29,8 @@ export function App() {
     dispatch(actions.site.installWindowHooks());
   }, []);
 
-  const [currentMode, setCurrentMode] = useState(
-    history.location.pathname.substr(1)
-  );
+  const comps = history.location.pathname.split("/").filter((c) => c.length);
+  const [currentMode, setCurrentMode] = useState(comps[comps.length - 1]);
 
   return (
     <AppWrapper>
