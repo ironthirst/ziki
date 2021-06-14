@@ -2,13 +2,22 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, useHistory } from "react-router-dom";
 import styled from "styled-components";
+import qs from "querystring";
 
 import { actions, ReduxState as RS } from "./rx";
 import { Modal, Button, DropDown } from "./components/Manta";
 import { PageLoadingSpinner } from "./components/Manta";
 
-import { AdditonProblem } from "./components/AdditionProblem";
-import { ColoringMap } from "./components/ColoringMap";
+import { AdditionProblem } from "./components/AdditionProblem";
+import {
+  WorldMap,
+  AsiaMap,
+  AfricaMap,
+  NorthAmericaMap,
+  SouthAmericaMap,
+  OceaniaMap,
+  EuropeMap,
+} from "./components/ColoringMap";
 import { TaiwanMap } from "./components/TaiwanMap";
 import { Bopomofo } from "./components/Bopomofo";
 import { ChineseCharacter } from "./components/ChineseCharacter";
@@ -16,10 +25,11 @@ import { EnglishCharacter } from "./components/EnglishCharacter";
 
 import { BattleDiceGame } from "./components/BattleDiceGame";
 import { RoundTheMap } from "./components/RoundTheMapGame";
+import { VisibleIf } from "./components/common/VisibleIf";
 
 const AppWrapper = styled.div``;
 
-const showGames = false;
+const showGames = true;
 
 export function App() {
   const history = useHistory();
@@ -29,9 +39,10 @@ export function App() {
     dispatch(actions.site.installWindowHooks());
   }, []);
 
-  const comps = history.location.pathname.split("/").filter((c) => c.length);
-  const [currentMode, setCurrentMode] = useState(comps[comps.length - 1]);
+  const search = qs.parse(history.location.search.substr(1));
+  const [currentMode, setCurrentMode] = useState(`${search["c"] || ""}`);
 
+  console.log("currentMode", currentMode);
   return (
     <AppWrapper>
       <div
@@ -56,7 +67,7 @@ export function App() {
           onValueChanged={(s) => {
             if (!s) return;
             setCurrentMode(s);
-            history.push(`/${s}`);
+            history.push(`${history.location.pathname}?c=${s}`);
           }}
         />
         <DropDown
@@ -75,7 +86,8 @@ export function App() {
           value={currentMode}
           onValueChanged={(s) => {
             if (!s) return;
-            history.push(`/${s}`);
+            setCurrentMode(s);
+            history.push(`${history.location.pathname}?c=${s}`);
           }}
         />
         {!showGames ? null : (
@@ -89,7 +101,8 @@ export function App() {
             value={currentMode}
             onValueChanged={(s) => {
               if (!s) return;
-              history.push(`/${s}`);
+              setCurrentMode(s);
+              history.push(`${history.location.pathname}?c=${s}`);
             }}
           />
         )}
@@ -98,37 +111,49 @@ export function App() {
         </Button>
       </div>
 
-      <Route path="/addition" component={AdditonProblem} />
-      <Route path="/world-map" render={() => <ColoringMap region="world" />} />
-      <Route path="/asia-map" render={() => <ColoringMap region="asia" />} />
-      <Route
-        path="/africa-map"
-        render={() => <ColoringMap region="africa" />}
+      <VisibleIf
+        cond={currentMode === "addition"}
+        component={AdditionProblem}
+      />
+      <VisibleIf cond={currentMode === "world-map"} component={WorldMap} />
+      <VisibleIf cond={currentMode === "asia-map"} component={AsiaMap} />
+      <VisibleIf
+        cond={currentMode === "north-america-map"}
+        component={NorthAmericaMap}
+      />
+      <VisibleIf
+        cond={currentMode === "south-america-map"}
+        component={SouthAmericaMap}
+      />
+      <VisibleIf cond={currentMode === "europe-map"} component={EuropeMap} />
+      <VisibleIf cond={currentMode === "oceania-map"} component={OceaniaMap} />
+      <VisibleIf cond={currentMode === "africa-map"} component={AfricaMap} />
+      <VisibleIf
+        cond={currentMode === "taiwan-county-map"}
+        component={TaiwanMap}
       />
 
-      <Route
-        path="/europe-map"
-        render={() => <ColoringMap region="europe" />}
+      <VisibleIf
+        cond={currentMode === "taiwan-county-map"}
+        component={TaiwanMap}
       />
-      <Route
-        path="/north-america-map"
-        render={() => <ColoringMap region="north-america" />}
+      <VisibleIf cond={currentMode === "bopomofo"} component={Bopomofo} />
+      <VisibleIf
+        cond={currentMode === "chinese-characters"}
+        component={ChineseCharacter}
       />
-      <Route
-        path="/south-america-map"
-        render={() => <ColoringMap region="south-america" />}
+      <VisibleIf
+        cond={currentMode === "english-characters"}
+        component={EnglishCharacter}
       />
-      <Route
-        path="/oceania-map"
-        render={() => <ColoringMap region="oceania" />}
+      <VisibleIf
+        cond={currentMode === "battle-dice-game"}
+        component={BattleDiceGame}
       />
-
-      <Route path="/taiwan-county-map" component={TaiwanMap} />
-      <Route path="/bopomofo" component={Bopomofo} />
-      <Route path="/chinese-characters" component={ChineseCharacter} />
-      <Route path="/english-characters" component={EnglishCharacter} />
-      <Route path="/battle-dice-game" component={BattleDiceGame} />
-      <Route path="/round-the-map" component={RoundTheMap} />
+      <VisibleIf
+        cond={currentMode === "round-the-map"}
+        component={RoundTheMap}
+      />
 
       <SiteModal />
       <SiteSpinner />

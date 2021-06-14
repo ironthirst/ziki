@@ -51,7 +51,7 @@ const Cell = styled.div<{
   ${(props) => (props.bottomBorder ? "border-bottom: 5px solid black;" : "")};
 `;
 
-export function AdditonProblem() {
+export function AdditionProblem() {
   const [numberOfDigits, setNumberOfDigits] = useState(10);
   const [numberOfProblems, setNumberOfProblems] = useState(3);
   // const [problemsPerPage, setProblemsPerPage] = useState(3);

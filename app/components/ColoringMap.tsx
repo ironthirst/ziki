@@ -183,3 +183,31 @@ export function ColoringMap(props: Props) {
     </PageWrapper>
   );
 }
+
+export function WorldMap() {
+  return <ColoringMap region="world" />;
+}
+
+export function AsiaMap() {
+  return <ColoringMap region="asia" />;
+}
+
+export function EuropeMap() {
+  return <ColoringMap region="europe" />;
+}
+
+export function NorthAmericaMap() {
+  return <ColoringMap region="north-america" />;
+}
+
+export function SouthAmericaMap() {
+  return <ColoringMap region="south-america" />;
+}
+
+export function AfricaMap() {
+  return <ColoringMap region="africa" />;
+}
+
+export function OceaniaMap() {
+  return <ColoringMap region="oceania" />;
+}
