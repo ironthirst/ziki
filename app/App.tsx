@@ -22,6 +22,7 @@ import { TaiwanMap } from "./components/TaiwanMap";
 import { Bopomofo } from "./components/Bopomofo";
 import { ChineseCharacter } from "./components/ChineseCharacter";
 import { EnglishCharacter } from "./components/EnglishCharacter";
+import { AdditionBingoBoard } from "./components/AdditionBingoBoard";
 
 import { BattleDiceGame } from "./components/BattleDiceGame";
 import { RoundTheMap } from "./components/RoundTheMapGame";
@@ -42,7 +43,6 @@ export function App() {
   const search = qs.parse(history.location.search.substr(1));
   const [currentMode, setCurrentMode] = useState(`${search["c"] || ""}`);
 
-  console.log("currentMode", currentMode);
   return (
     <AppWrapper>
       <div
@@ -62,6 +62,7 @@ export function App() {
             { label: "注音符號練習表", value: "bopomofo" },
             { label: "中文筆順練習表", value: "chinese-characters" },
             { label: "英文筆順練習表", value: "english-characters" },
+            { label: "加法賓果板", value: "addition-bingo" },
           ]}
           value={currentMode}
           onValueChanged={(s) => {
@@ -153,6 +154,10 @@ export function App() {
       <VisibleIf
         cond={currentMode === "round-the-map"}
         component={RoundTheMap}
+      />
+      <VisibleIf
+        cond={currentMode === "addition-bingo"}
+        component={AdditionBingoBoard}
       />
 
       <SiteModal />
