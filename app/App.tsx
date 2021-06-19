@@ -23,6 +23,7 @@ import { Bopomofo } from "./components/Bopomofo";
 import { ChineseCharacter } from "./components/ChineseCharacter";
 import { EnglishCharacter } from "./components/EnglishCharacter";
 import { AdditionBingoBoard } from "./components/AdditionBingoBoard";
+import { SudokuBoard } from "./components/SudokuBoard";
 import { GridMaker } from "./components/GridMaker";
 
 import { BattleDiceGame } from "./components/BattleDiceGame";
@@ -100,6 +101,7 @@ export function App() {
               { label: "---", value: "" },
               { label: "怪物大亂鬥", value: "battle-dice-game" },
               { label: "環遊台灣", value: "round-the-map" },
+              { label: "數獨", value: "sudoku" },
             ]}
             value={currentMode}
             onValueChanged={(s) => {
@@ -161,6 +163,7 @@ export function App() {
         cond={currentMode === "addition-bingo"}
         component={AdditionBingoBoard}
       />
+      <VisibleIf cond={currentMode === "sudoku"} component={SudokuBoard} />
       <VisibleIf cond={currentMode === "grid-maker"} component={GridMaker} />
 
       <SiteModal />

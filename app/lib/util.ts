@@ -2,6 +2,18 @@ export function times(n: number) {
   return new Array(Math.max(n, 0)).fill(undefined).map((v, i) => i);
 }
 
+export function shuffle<T>(arr: T[]) {
+  const res = [...arr];
+  for (let k = 0; k < res.length; k++) {
+    const i = Math.floor(Math.random() * res.length);
+    const j = Math.floor(Math.random() * res.length);
+    const tmp = res[i];
+    res[i] = res[j];
+    res[j] = tmp;
+  }
+  return res;
+}
+
 export function chunk<T>(arr: T[], n: number) {
   // assuming n > 0;
   const chunked = [] as T[][];
