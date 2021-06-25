@@ -48,6 +48,33 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.7/es5-sham.min.js"></script>
 
     <link href="css/theme.css" rel="stylesheet" type="text/css" />
+    <style>
+      @font-face {
+        font-family: BopomofoRuby;
+        src: url("/fonts/BopomofoPro-Regular.ttf");
+      }
+
+      .h rt,
+      .v rt {
+        font-family: BopomofoRuby;
+      }
+
+      /* 橫書 */
+      .h {
+        font-variant-east-asian: salt;
+        -moz-font-feature-settings: "salt";
+        -webkit-font-feature-settings: "salt";
+        font-feature-settings: "salt";
+      }
+
+      /* 直書 */
+      .v {
+        writing-mode: vertical-lr;
+        -webkit-writing-mode: vertical-lr;
+        -moz-writing-mode: vertical-lr;
+        text-orientation: upright;
+      }
+    </style>
   </head>
 
   <body>

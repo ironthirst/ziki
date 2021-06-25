@@ -29,6 +29,7 @@ import { GridMaker } from "./components/GridMaker";
 import { BattleDiceGame } from "./components/BattleDiceGame";
 import { RoundTheMap } from "./components/RoundTheMapGame";
 import { VisibleIf } from "./components/common/VisibleIf";
+import { Pokedex } from "./components/Pokedex";
 
 const AppWrapper = styled.div``;
 
@@ -102,6 +103,7 @@ export function App() {
               { label: "怪物大亂鬥", value: "battle-dice-game" },
               { label: "環遊台灣", value: "round-the-map" },
               { label: "數獨", value: "sudoku" },
+              { label: "寶可夢圖鑑", value: "pokedex" },
             ]}
             value={currentMode}
             onValueChanged={(s) => {
@@ -165,6 +167,7 @@ export function App() {
       />
       <VisibleIf cond={currentMode === "sudoku"} component={SudokuBoard} />
       <VisibleIf cond={currentMode === "grid-maker"} component={GridMaker} />
+      <VisibleIf cond={currentMode === "pokedex"} component={Pokedex} />
 
       <SiteModal />
       <SiteSpinner />
